@@ -1,0 +1,7 @@
+**Terms and Conditions:**
+
+*By using the !register command you:*
+
+1. Consent to the storage of your discordID and voting history for the previous week.
+
+2. Agree not to use this bot to bully, as defined by majority vote, the other members of the server for any such reason (mass vote boycotts). 
