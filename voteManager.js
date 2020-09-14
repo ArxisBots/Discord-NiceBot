@@ -225,5 +225,6 @@ var addVoteToScore = function(userID, callback){
 
 module.exports = {
     weeklyResultsUpdate: weeklyResultsUpdate,
-    monthlyScoreReset: monthlyScoreReset
+    monthlyScoreReset: monthlyScoreReset,
+    displayWeeklyResults: displayWeeklyResults
 }
