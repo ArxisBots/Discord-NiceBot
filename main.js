@@ -31,10 +31,11 @@ global.info = function info(message, args){
     }
 }
 
-global.clearAdmin55873 = function clear(message, args){
+global.clearAdmin5629762 = function clear(message, args){
     tools.clear(message, 2);
 }
-global.displayScoreAdmin44873 = function clear(message, args){
+
+global.displayScoreAdmin4487390 = function clear(message, args){
     tools.clear(message, 1);
     votes.displayWeeklyResults(message.channel);
 }

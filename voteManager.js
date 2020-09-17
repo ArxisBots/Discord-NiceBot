@@ -8,20 +8,24 @@ const users = require('./userManager');
 
 var weeklyResultsUpdate = cron.schedule("0 0 8 * * 1", function(){
     var channel = bot.bot.channels.cache.get(process.env.CHANNELID);
-    addVotes(function(){
-        displayWeeklyResults(channel);
+    addLastWeeksScore(function(){
+        addVotes(function(){
+            displayWeeklyResults(channel);
+        });
     });
 });
 
 var monthlyScoreReset = cron.schedule("0 0 8 * Jan,Jun 1", function(){
     var channel = bot.bot.channels.cache.get(process.env.CHANNELID);
     addVotes(function(){
-        displayFinalResults(channel, function(){
-            var statement = "UPDATE users SET Score = 0 WHERE 1";
-            db.executeQuery(statement, userID, 
-                function(err, results, fields){
-                if(err) throw err;
-                channel.send("Scores have now been reset");
+        addLastWeeksScore(function(){
+            displayFinalResults(channel, function(){
+                var statement = "UPDATE users SET Score = 0 WHERE 1";
+                db.executeQuery(statement, userID, 
+                    function(err, results, fields){
+                    if(err) throw err;
+                    channel.send("Scores have now been reset");
+                });
             });
         });
     });
@@ -80,8 +84,16 @@ global.vote = function vote(message, args) {
     });
 }
 
+var addLastWeeksScore = function(callback){
+    var statement = "UPDATE users SET Score = Score + WeeklyScore, WeeklyScore = 0";
+    db.executeQuery(statement, "null", function(err, results, fields){
+        if(err) throw err;
+        callback();
+    });
+}
+
 var displayWeeklyResults = function(channel){
-    var statement = "SELECT * FROM users WHERE 1 ORDER BY Score Desc";
+    var statement = "SELECT * FROM users WHERE 1 ORDER BY WeeklyScore Desc, Score Asc";
     db.executeQuery(statement, "null", function(err, results, fields){
         if(err) throw err;
         let usersList = [];
@@ -91,7 +103,7 @@ var displayWeeklyResults = function(channel){
             let member = channel.guild.member(result.UserHash);
             let nickname = member.displayName == null ? member.name : member.displayName;
             usersList.push(nickname.replace(/ /g, "_"));
-            votesList.push(result.Score);
+            votesList.push(result.WeeklyScore);
         });
         
         usersList = usersList.slice(0,3);
@@ -215,7 +227,7 @@ var removeVote = function(voteID, callback){
 }
 
 var addVoteToScore = function(userID, callback){
-    var statement = "UPDATE users SET Score = Score + 1 WHERE UserID = ?";
+    var statement = "UPDATE users SET WeeklyScore = WeeklyScore + 1 WHERE UserID = ?";
     db.executeQuery(statement, userID, 
         function(err, results, fields){
         if(err) throw err;
