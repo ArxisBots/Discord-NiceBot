@@ -65,17 +65,17 @@ global.vote = function vote(message, args) {
 
     users.getUserByNick(message, name, function(userHash){
         if(userHash == -1){
-            message.send(tools.error("Invalid user", 
+            message.channel.send(tools.error("Invalid user", 
                 "The person you voted for does not exist")); 
             return;  
         }else if(userHash == message.author.id){
-            message.send(tools.error("Invalid User", 
+            message.channel.send(tools.error("Invalid User", 
                 "You cannot vote for yourself -1 nice points!!! jk i still love you <3")); 
             return;  
         }
         users.getUserData(userHash, function(userID, score){
             if(userID == undefined){
-                message.send(tools.error("Invalid user", 
+                message.channel.send(tools.error("Invalid user", 
                         "The person you voted for does not exist")); 
                 return;  
             }
