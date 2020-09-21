@@ -97,19 +97,22 @@ var displayWeeklyResults = function(channel){
     db.executeQuery(statement, "null", function(err, results, fields){
         if(err) throw err;
         let usersList = [];
+        let formattedUsersList = []
         let votesList = [];
 
         results.forEach(function(result, i){
             let member = channel.guild.member(result.UserHash);
             let nickname = member.displayName == null ? member.name : member.displayName;
-            usersList.push(nickname.replace(/ /g, "_"));
+            usersList.push(result.UserHash);
+            formattedUsersList.push(nickname.replace(/ /g, "_"));
             votesList.push(result.WeeklyScore);
         });
         
         usersList = usersList.slice(0,3);
+        formattedUsersList = formattedUsersList.slice(0,3);
         votesList = votesList.slice(0,3);
 
-        chartConfig = "{type:'bar',data:{labels:['"+ usersList.join("','") +"'],"+
+        chartConfig = "{type:'bar',data:{labels:['"+ formattedUsersList.join("','") +"'],"+
             "datasets:[{label:'Votes',data:["+ votesList.join(",") +"],"+
             "fontColor:'white'}]}}";
         let url = "https://quickchart.io/chart?c="+chartConfig;
@@ -129,6 +132,10 @@ var displayWeeklyResults = function(channel){
                 icon_url: bot.bot.user.avatarURL()
             }
         }});
+        channel.send("Congratulations to <@" + usersList[0] + ">" +
+                "<@" + usersList[1] + "> and "+
+                "<@" + usersList[2] + "> "+
+                "for winning this weeks niceness poll! :tada:");
     });
 }
 
