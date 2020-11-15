@@ -42,10 +42,12 @@ global.myVotes = function myVotes(message, args) {
                 votesList.forEach(function(vote, i){
                     users.getUserByID(message, vote[1], function(userHash){
                         let member = message.channel.guild.member(userHash);
-                        let nickname = member.displayName == null ? member.name : member.displayName;
-                        votes.push(nickname);
-                        if(i == votesList.length-1){
-                            message.author.send("Your Votes: " + votes.join(", "));
+                        if(member != null){
+                            let nickname = member.displayName == null ? member.name : member.displayName;
+                            votes.push(nickname);
+                            if(i == votesList.length-1){
+                                message.author.send("Your Votes: " + votes.join(", "));
+                            }
                         }
                     });
                 });
