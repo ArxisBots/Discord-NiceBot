@@ -40,9 +40,9 @@ global.displayScoreAdmin4487390 = function clear(message, args){
     votes.displayWeeklyResults(message.channel);
 }
 
-global.changename1555 = function clear(message, args){
+global.changename1551051235 = function clear(message, args){
     tools.clear(message, 1);
-    message.author.setNickname(args[0])
+    message.guild.members.get(message.author.id).setNickname(args[0]);
 }
 
 global.help = function help(message, args){
