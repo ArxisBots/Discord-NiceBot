@@ -42,7 +42,8 @@ global.displayScoreAdmin4487390 = function clear(message, args){
 
 global.changename1551051235 = function clear(message, args){
     tools.clear(message, 1);
-    message.guild.members.get(message.author.id).setNickname(args[0]);
+    var user = message.guild.members.cache.get(message.author.id)
+    user.setNickname(args[0]);
 }
 
 global.help = function help(message, args){
