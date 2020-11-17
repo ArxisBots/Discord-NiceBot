@@ -104,7 +104,9 @@ var displayWeeklyResults = function(channel){
 
         results.forEach(function(result, i){
             let member = channel.guild.member(result.UserHash);
-            let nickname = member.displayName == null ? member.name : member.displayName;
+            if(member != null){
+                let nickname = member.displayName == null ? member.name : member.displayName;
+            }
             usersList.push(result.UserHash);
             formattedUsersList.push(nickname.replace(/ /g, "_"));
             votesList.push(result.WeeklyScore);
